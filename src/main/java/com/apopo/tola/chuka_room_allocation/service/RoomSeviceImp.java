@@ -95,4 +95,21 @@ public class RoomSeviceImp implements RoomService {
         }
         return status;
     }
+
+    @Override
+    public List<RoomResponseDto> getAllRoomsInABuilding(Long buildingId) {
+        List<Rooms> roomList = roomsRepository.findByBuildingsId(buildingId);
+        return roomList.stream().map(rooms -> {
+            BuildingResponseDto buildingResponseDto = BuildingResponseDto.builder()
+                    .department(rooms.getBuildings().getDepartment())
+                    .name(rooms.getBuildings().getName())
+                    .build();
+            RoomResponseDto responseDto = RoomResponseDto.builder()
+                    .id(rooms.getId())
+                    .capacity(rooms.getCapacity())
+                    .building(buildingResponseDto)
+                    .build();
+            return responseDto;
+        }).collect(Collectors.toList());
+    }
 }

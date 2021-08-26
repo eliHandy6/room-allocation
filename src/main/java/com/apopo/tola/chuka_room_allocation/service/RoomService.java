@@ -12,7 +12,10 @@ public interface RoomService {
 
     List<RoomResponseDto> getAllRooms(PageRequest pageRequest);
 
+
     RoomResponseDto updateRoom(long id, RoomsRequestDto roomsRequestDto);
 
     boolean deleteId(long id);
+
+    List<RoomResponseDto> getAllRoomsInABuilding(Long buildingId);
 }
