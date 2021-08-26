@@ -7,8 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -16,12 +15,14 @@ import java.time.LocalDate;
 @Builder
 public class BookedRoomResponseDto {
 
+    private Long id;
+
     private RoomResponseDto room;
 
     private Status status;
 
     @JsonProperty(value = "venue_date")
-    private LocalDate venueDate;
+    private Date venueDate;
 
     @JsonProperty(value = "time_from")
     private String timeFrom;
@@ -34,4 +35,7 @@ public class BookedRoomResponseDto {
 
     @JsonProperty(value = "admin_comments")
     private String status_comments;
+
+    @JsonProperty(value = "club")
+    private ClubResponseDto club;
 }

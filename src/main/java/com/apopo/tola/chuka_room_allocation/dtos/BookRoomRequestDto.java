@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -17,8 +17,11 @@ public class BookRoomRequestDto {
     @JsonProperty(value = "room_id")
     private long roomId;
 
+    @JsonProperty(value = "number_of_guests")
+    private int no_of_guests;
+
     @JsonProperty(value = "venue_date")
-    private LocalDate venueDate;
+    private Date venueDate;
 
     @JsonProperty(value = "time_from")
     private String timeFrom;
@@ -29,4 +32,6 @@ public class BookRoomRequestDto {
     @JsonProperty(value = "bookie_comments")
     private String comments;
 
+    @JsonProperty(value = "club_id")
+    private  Long clubId;
 }

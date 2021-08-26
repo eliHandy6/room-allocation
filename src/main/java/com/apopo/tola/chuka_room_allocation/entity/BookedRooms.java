@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.time.LocalDate;
+
 import java.util.Date;
 
 @Data
@@ -35,6 +35,15 @@ public class BookedRooms extends Auditable {
     private String bookieComments;
 
     private String statusComments;
+
+    private int noOfGuests;
+
+    @ManyToOne
+    @JoinColumn
+    private Clubs clubs;
+
+
+
 
 
 }
