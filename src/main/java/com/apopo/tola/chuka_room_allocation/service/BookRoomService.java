@@ -18,5 +18,6 @@ public interface BookRoomService {
     List<BookedRoomResponseDto> getPendingRoomsInABuilding(Long buildingId,Date date);
     List<BookedRoomResponseDto> getRoomBookingHistory(Long roomId);
     BookedRoomResponseDto checkRoomStatus(Long  roomId,Date date,String time_from,String time_to);
+    BookedRoomResponseDto cancelBooking(long id,  BookRoomRequestDto bookRoomRequestDto );
 
 }

@@ -60,7 +60,7 @@ public class BookingsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> deleteClub(@PathVariable("id") Long id) {
+    public ResponseEntity<ApiResponse> deleteBookings(@PathVariable("id") Long id) {
         ApiResponse response = ApiResponse.builder()
                 .message("Failed to delete club with id" + " " + id)
                 .status(HttpStatus.BAD_REQUEST)
@@ -133,6 +133,69 @@ public class BookingsController {
             List<BookedRoomResponseDto> returnDtos = bookingService.getPendingRoomsInABuilding(buildingId, date);
             response.setMessage("Room pending booking data retrieved successfully");
             response.setData_list(Collections.singletonList(returnDtos));
+            response.setSuccess(true);
+            response.setStatus(HttpStatus.OK);
+            return ResponseEntity.status(response.getStatus()).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PutMapping("/{id}/cancel")
+    public ResponseEntity<ApiResponse> cancelBooking(@PathVariable("id") Long id, BookRoomRequestDto bookRoomRequestDto) {
+        ApiResponse response = ApiResponse.builder()
+                .message("Failed to cancel room booking with id" + " " + id)
+                .status(HttpStatus.BAD_REQUEST)
+                .timestamp(new Date())
+                .success(false)
+                .build();
+        try {
+            BookedRoomResponseDto returnDto = bookingService.cancelBooking(id, bookRoomRequestDto);
+            response.setMessage("Room booking cancelled succesfully");
+            response.setData(returnDto);
+            response.setSuccess(true);
+            response.setStatus(HttpStatus.OK);
+            return ResponseEntity.status(response.getStatus()).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/rooms/{id}/history")
+    public ResponseEntity<ApiResponse> roomBookingDataHistory(@PathVariable Long roomId) {
+        ApiResponse response = ApiResponse.builder()
+                .message("Failed to get list of rooms data")
+                .status(HttpStatus.BAD_REQUEST)
+                .timestamp(new Date())
+                .success(false)
+                .build();
+        try {
+            List<BookedRoomResponseDto> returnDtos = bookingService.getRoomBookingHistory(roomId);
+            response.setMessage("Room booking data retrieved successfully");
+            response.setData_list(Collections.singletonList(returnDtos));
+            response.setSuccess(true);
+            response.setStatus(HttpStatus.OK);
+            return ResponseEntity.status(response.getStatus()).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/rooms/{id}/status")
+    public ResponseEntity<ApiResponse> checkIfRoomIsAvailable(@PathVariable Long roomId,
+                                                              @RequestParam Date date,
+                                                              @RequestParam String time_from,
+                                                              @RequestParam String time_to) {
+        ApiResponse response = ApiResponse.builder()
+                .message("Failed to get list of rooms data")
+                .status(HttpStatus.BAD_REQUEST)
+                .timestamp(new Date())
+                .success(false)
+                .build();
+        try {
+            BookedRoomResponseDto returnDto = bookingService.checkRoomStatus(roomId, date, time_from, time_to);
+            response.setMessage("Room booking data retrieved successfully");
+            response.setData(returnDto);
             response.setSuccess(true);
             response.setStatus(HttpStatus.OK);
             return ResponseEntity.status(response.getStatus()).body(response);

@@ -324,4 +324,42 @@ public class BookRoomServiceImpl implements BookRoomService {
 
         return responseDto;
     }
+
+    @Override
+    public BookedRoomResponseDto cancelBooking(long id, BookRoomRequestDto bookRoomRequestDto) {
+
+        BookedRooms masterBookings = repository.findById(id).get();
+        masterBookings.setStatus(Status.CANCELLED);
+        masterBookings.setStatusComments(bookRoomRequestDto.getComments());
+        masterBookings = repository.save(masterBookings);
+
+        BuildingResponseDto buildingResponseDto = BuildingResponseDto.builder()
+                .department(masterBookings.getRooms().getBuildings().getDepartment())
+                .name(masterBookings.getRooms().getBuildings().getName())
+                .build();
+        RoomResponseDto roomdto = RoomResponseDto.builder()
+                .id(masterBookings.getRooms().getId())
+                .capacity(masterBookings.getRooms().getCapacity())
+                .building(buildingResponseDto)
+                .build();
+
+        ClubResponseDto clubdto = ClubResponseDto.builder()
+                .id(masterBookings.getClubs().getId())
+                .clubEmail(masterBookings.getClubs().getClubEmail())
+                .contactPerson(masterBookings.getClubs().getContactPerson())
+                .name(masterBookings.getClubs().getName())
+                .description(masterBookings.getClubs().getDescription())
+                .build();
+
+        BookedRoomResponseDto responseDto = BookedRoomResponseDto.builder()
+                .id(masterBookings.getId())
+                .room(roomdto)
+                .comments(masterBookings.getBookieComments())
+                .status(masterBookings.getStatus())
+                .timeFrom(masterBookings.getTimeFrom())
+                .timeTo(masterBookings.getTimeTo())
+                .club(clubdto)
+                .build();
+        return responseDto;
+    }
 }

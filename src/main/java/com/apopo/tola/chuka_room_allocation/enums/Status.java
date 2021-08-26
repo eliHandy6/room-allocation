@@ -5,6 +5,6 @@ import lombok.Getter;
 @Getter
 public enum Status {
 
-    BOOKED, PENDING, FREE
+    BOOKED, PENDING, CANCELLED
 
 }
