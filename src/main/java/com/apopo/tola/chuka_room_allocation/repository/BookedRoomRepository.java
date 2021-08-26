@@ -16,7 +16,7 @@ public interface BookedRoomRepository  extends JpaRepository<BookedRooms,Long> {
     Boolean existsByRoomsAndVenueDateAndTimeFromAndTimeTo(Rooms room, Date date, String time_from, String time_to);
     BookedRooms findByRoomsAndVenueDateAndTimeFromAndTimeTo(Rooms room, Date date, String time_from, String time_to);
     List<BookedRooms> findByRooms(Rooms rooms);
-    List<BookedRooms> findByRoomsBuildingsAndStatus(Buildings buildings, Status status);
+    List<BookedRooms> findByRoomsBuildingsAndStatusAndVenueDate(Buildings buildings, Status status,Date date);
     List<BookedRooms> findByRoomsAndVenueDate(Rooms rooms, Date date);
 
 }

@@ -74,7 +74,7 @@ public class RoomsController {
                 .build();
         try {
             RoomResponseDto returnDto = roomService.updateRoom(id, roomsRequestDto);
-            response.setMessage("Building updated succesfully");
+            response.setMessage("Room updated succesfully");
             response.setData(returnDto);
             response.setSuccess(true);
             response.setStatus(HttpStatus.OK);

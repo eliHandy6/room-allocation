@@ -174,9 +174,9 @@ public class BookRoomServiceImpl implements BookRoomService {
     }
 
     @Override
-    public List<BookedRoomResponseDto> getBookedRoomsInABuilding(Long buildingId) {
+    public List<BookedRoomResponseDto> getBookedRoomsInABuilding(Long buildingId, Date date) {
         Optional<Buildings> buildings = buildingsRepository.findById(buildingId);
-        List<BookedRooms> bookedRooms = repository.findByRoomsBuildingsAndStatus(buildings.get(), Status.BOOKED);
+        List<BookedRooms> bookedRooms = repository.findByRoomsBuildingsAndStatusAndVenueDate(buildings.get(), Status.BOOKED, date);
         return bookedRooms.stream().map(masterBookings -> {
             BuildingResponseDto buildingResponseDto = BuildingResponseDto.builder()
                     .department(masterBookings.getRooms().getBuildings().getDepartment())
@@ -212,9 +212,9 @@ public class BookRoomServiceImpl implements BookRoomService {
     }
 
     @Override
-    public List<BookedRoomResponseDto> getPendingRoomsInABuilding(Long buildingId) {
+    public List<BookedRoomResponseDto> getPendingRoomsInABuilding(Long buildingId, Date date) {
         Optional<Buildings> buildings = buildingsRepository.findById(buildingId);
-        List<BookedRooms> pendingRooms = repository.findByRoomsBuildingsAndStatus(buildings.get(), Status.PENDING);
+        List<BookedRooms> pendingRooms = repository.findByRoomsBuildingsAndStatusAndVenueDate(buildings.get(), Status.PENDING, date);
 
         return pendingRooms.stream().map(masterBookings -> {
             BuildingResponseDto buildingResponseDto = BuildingResponseDto.builder()
