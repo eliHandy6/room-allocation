@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/apis/v1/clubs")
 @AllArgsConstructor
@@ -43,8 +43,8 @@ public class ClubsController {
 
 
     @GetMapping
-    public ResponseEntity<ApiResponse> fetchAllClubs(@RequestParam Integer page, @RequestParam Integer size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
+    public ResponseEntity<ApiResponse> fetchAllClubs() {
+
         ApiResponse response = ApiResponse.builder()
                 .message("Failed to get list of clubs")
                 .status(HttpStatus.BAD_REQUEST)
@@ -52,7 +52,7 @@ public class ClubsController {
                 .success(false)
                 .build();
         try {
-            List<ClubResponseDto> returnDtos = clubService.getAllClubs(pageRequest);
+            List<ClubResponseDto> returnDtos = clubService.getAllClubs();
             response.setMessage("Clubs list retrieved successfully");
             response.setData_list(Collections.singletonList(returnDtos));
             response.setSuccess(true);

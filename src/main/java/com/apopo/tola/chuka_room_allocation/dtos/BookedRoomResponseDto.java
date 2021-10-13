@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.Date;
 
 @Data
@@ -38,4 +39,7 @@ public class BookedRoomResponseDto {
 
     @JsonProperty(value = "club")
     private ClubResponseDto club;
+
+    @JsonProperty(value = "created_at")
+    private Instant createdAt;
 }

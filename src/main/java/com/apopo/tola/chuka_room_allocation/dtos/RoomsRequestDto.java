@@ -18,7 +18,7 @@ public class RoomsRequestDto {
     private String name;
 
     @JsonProperty(value = "building_id")
-    private Long buildingsId;
+    private String buildingsId;
 
     @JsonProperty(value = "capacity")
     private Long capacity;

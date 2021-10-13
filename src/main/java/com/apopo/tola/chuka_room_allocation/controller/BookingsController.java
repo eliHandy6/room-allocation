@@ -12,12 +12,35 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/apis/v1/bookings")
 @AllArgsConstructor
 public class BookingsController {
 
     private final BookRoomService bookingService;
+
+
+    @GetMapping
+    public ResponseEntity<ApiResponse> fetchAllBookings() {
+
+        ApiResponse response = ApiResponse.builder()
+                .message("Failed to get list of bookings")
+                .status(HttpStatus.BAD_REQUEST)
+                .timestamp(new Date())
+                .success(false)
+                .build();
+        try {
+            List<BookedRoomResponseDto> returnDtos = bookingService.getAllBookings();
+            response.setMessage("Clubs list retrieved successfully");
+            response.setData_list(Collections.singletonList(returnDtos));
+            response.setSuccess(true);
+            response.setStatus(HttpStatus.OK);
+            return ResponseEntity.status(response.getStatus()).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
     @PostMapping
     public ResponseEntity<ApiResponse> book(@RequestBody BookRoomRequestDto bookRoomRequestDto) {
@@ -162,7 +185,7 @@ public class BookingsController {
     }
 
     @GetMapping("/rooms/{id}/history")
-    public ResponseEntity<ApiResponse> roomBookingDataHistory(@PathVariable Long roomId) {
+    public ResponseEntity<ApiResponse> roomBookingDataHistory(@PathVariable Long id) {
         ApiResponse response = ApiResponse.builder()
                 .message("Failed to get list of rooms data")
                 .status(HttpStatus.BAD_REQUEST)
@@ -170,7 +193,7 @@ public class BookingsController {
                 .success(false)
                 .build();
         try {
-            List<BookedRoomResponseDto> returnDtos = bookingService.getRoomBookingHistory(roomId);
+            List<BookedRoomResponseDto> returnDtos = bookingService.getRoomBookingHistory(id);
             response.setMessage("Room booking data retrieved successfully");
             response.setData_list(Collections.singletonList(returnDtos));
             response.setSuccess(true);

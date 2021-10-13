@@ -15,7 +15,7 @@ import java.util.Date;
 public class BookRoomRequestDto {
 
     @JsonProperty(value = "room_id")
-    private long roomId;
+    private String roomId;
 
     @JsonProperty(value = "number_of_guests")
     private int no_of_guests;
@@ -33,5 +33,5 @@ public class BookRoomRequestDto {
     private String comments;
 
     @JsonProperty(value = "club_id")
-    private  Long clubId;
+    private  String clubId;
 }

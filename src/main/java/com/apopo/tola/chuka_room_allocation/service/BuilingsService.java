@@ -9,7 +9,7 @@ import java.util.List;
 public interface BuilingsService {
 
     BuildingResponseDto createBuilding( BuildingRequestDto buildingRequestDto);
-    List<BuildingResponseDto> getAllBuilding(PageRequest pageRequest);
+    List<BuildingResponseDto> getAllBuilding();
     BuildingResponseDto updateBuilding(long id, BuildingRequestDto buildingRequestDto);
     boolean deleteId(long id);
 }

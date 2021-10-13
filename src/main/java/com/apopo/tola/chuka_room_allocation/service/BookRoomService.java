@@ -2,7 +2,7 @@ package com.apopo.tola.chuka_room_allocation.service;
 
 import com.apopo.tola.chuka_room_allocation.dtos.BookRoomRequestDto;
 import com.apopo.tola.chuka_room_allocation.dtos.BookedRoomResponseDto;
-
+import com.apopo.tola.chuka_room_allocation.dtos.ClubResponseDto;
 
 
 import java.util.Date;
@@ -20,4 +20,5 @@ public interface BookRoomService {
     BookedRoomResponseDto checkRoomStatus(Long  roomId,Date date,String time_from,String time_to);
     BookedRoomResponseDto cancelBooking(long id,  BookRoomRequestDto bookRoomRequestDto );
 
+    List<BookedRoomResponseDto> getAllBookings();
 }

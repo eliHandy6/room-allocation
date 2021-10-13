@@ -9,13 +9,8 @@ import java.util.List;
 public interface RoomService {
 
     RoomResponseDto createRoom(RoomsRequestDto roomsRequestDto);
-
-    List<RoomResponseDto> getAllRooms(PageRequest pageRequest);
-
-
+    List<RoomResponseDto> getAllRooms();
     RoomResponseDto updateRoom(long id, RoomsRequestDto roomsRequestDto);
-
     boolean deleteId(long id);
-
-    List<RoomResponseDto> getAllRoomsInABuilding(Long buildingId);
+    List<RoomResponseDto> getAllRoomsInABuilding(String buildingId);
 }

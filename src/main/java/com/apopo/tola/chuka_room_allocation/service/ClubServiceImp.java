@@ -41,8 +41,8 @@ public class ClubServiceImp implements ClubService {
     }
 
     @Override
-    public List<ClubResponseDto> getAllClubs(PageRequest pageRequest) {
-        List<Clubs> returnedList = repository.findAll(pageRequest).toList();
+    public List<ClubResponseDto> getAllClubs() {
+        List<Clubs> returnedList = repository.findAll();
         return returnedList.stream().map(clubs -> {
             ClubResponseDto clubResponseDto = ClubResponseDto.builder()
                     .id(clubs.getId())
@@ -50,6 +50,8 @@ public class ClubServiceImp implements ClubService {
                     .contactPerson(clubs.getContactPerson())
                     .name(clubs.getName())
                     .description(clubs.getDescription())
+                    .contactPersonPhoneNo(clubs.getContactPersonPhoneNo())
+                    .createdAt(clubs.getCreatedAt())
                     .build();
             return clubResponseDto;
         }).collect(Collectors.toList());

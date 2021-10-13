@@ -8,7 +8,6 @@ import com.apopo.tola.chuka_room_allocation.entity.Rooms;
 import com.apopo.tola.chuka_room_allocation.repository.BuildingsRepository;
 import com.apopo.tola.chuka_room_allocation.repository.RoomsRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class RoomSeviceImp implements RoomService {
 
     @Override
     public RoomResponseDto createRoom(RoomsRequestDto roomsRequestDto) {
-        Optional<Buildings> building = repository.findById(roomsRequestDto.getBuildingsId());
+        Optional<Buildings> building = repository.findById(Long.parseLong(roomsRequestDto.getBuildingsId()));
         Rooms returnedRoom = Rooms.builder().build();
         if (building.isPresent()) {
             Rooms rooms = Rooms.builder()
@@ -43,14 +42,15 @@ public class RoomSeviceImp implements RoomService {
                 .id(returnedRoom.getId())
                 .capacity(returnedRoom.getCapacity())
                 .building(buildingResponseDto)
+                .name(returnedRoom.getName())
                 .build();
         return responseDto;
 
     }
 
     @Override
-    public List<RoomResponseDto> getAllRooms(PageRequest pageRequest) {
-        List<Rooms> roomList = roomsRepository.findAll(pageRequest).toList();
+    public List<RoomResponseDto> getAllRooms( ) {
+        List<Rooms> roomList = roomsRepository.findAll();
         return roomList.stream().map(rooms -> {
             BuildingResponseDto buildingResponseDto = BuildingResponseDto.builder()
                     .department(rooms.getBuildings().getDepartment())
@@ -59,7 +59,9 @@ public class RoomSeviceImp implements RoomService {
             RoomResponseDto responseDto = RoomResponseDto.builder()
                     .id(rooms.getId())
                     .capacity(rooms.getCapacity())
+                    .name(rooms.getName())
                     .building(buildingResponseDto)
+                    .roomCreatedAt(rooms.getCreatedAt())
                     .build();
             return responseDto;
         }).collect(Collectors.toList());
@@ -97,8 +99,8 @@ public class RoomSeviceImp implements RoomService {
     }
 
     @Override
-    public List<RoomResponseDto> getAllRoomsInABuilding(Long buildingId) {
-        List<Rooms> roomList = roomsRepository.findByBuildingsId(buildingId);
+    public List<RoomResponseDto> getAllRoomsInABuilding(String buildingId) {
+        List<Rooms> roomList = roomsRepository.findByBuildingsId(Long.parseLong(buildingId));
         return roomList.stream().map(rooms -> {
             BuildingResponseDto buildingResponseDto = BuildingResponseDto.builder()
                     .department(rooms.getBuildings().getDepartment())
@@ -108,6 +110,8 @@ public class RoomSeviceImp implements RoomService {
                     .id(rooms.getId())
                     .capacity(rooms.getCapacity())
                     .building(buildingResponseDto)
+                    .name(rooms.getName())
+                    .roomCreatedAt(rooms.getCreatedAt())
                     .build();
             return responseDto;
         }).collect(Collectors.toList());

@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/apis/v1/buildings")
 @AllArgsConstructor
@@ -43,8 +44,8 @@ public class BuildingController {
 
 
     @GetMapping
-    public ResponseEntity<ApiResponse> fetchBuildingRecords(@RequestParam Integer page, @RequestParam Integer size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
+    public ResponseEntity<ApiResponse> fetchBuildingRecords() {
+
         ApiResponse response = ApiResponse.builder()
                 .message("Failed to get list of Buildings")
                 .status(HttpStatus.BAD_REQUEST)
@@ -52,7 +53,7 @@ public class BuildingController {
                 .success(false)
                 .build();
         try {
-            List<BuildingResponseDto> returnDtos = buildingService.getAllBuilding(pageRequest);
+            List<BuildingResponseDto> returnDtos = buildingService.getAllBuilding();
             response.setMessage("Building list retrieved successfully");
             response.setData_list(Collections.singletonList(returnDtos));
             response.setSuccess(true);

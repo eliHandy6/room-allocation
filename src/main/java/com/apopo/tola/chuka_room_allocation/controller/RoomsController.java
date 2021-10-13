@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/apis/v1/rooms")
 @AllArgsConstructor
@@ -44,8 +45,8 @@ public class RoomsController {
 
 
     @GetMapping
-    public ResponseEntity<ApiResponse> fetchAllRooms(@RequestParam Integer page, @RequestParam Integer size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
+    public ResponseEntity<ApiResponse> fetchAllRooms() {
+
         ApiResponse response = ApiResponse.builder()
                 .message("Failed to get list of rooms")
                 .status(HttpStatus.BAD_REQUEST)
@@ -53,7 +54,7 @@ public class RoomsController {
                 .success(false)
                 .build();
         try {
-            List<RoomResponseDto> returnDtos = roomService.getAllRooms(pageRequest);
+            List<RoomResponseDto> returnDtos = roomService.getAllRooms();
             response.setMessage("Room list retrieved successfully");
             response.setData_list(Collections.singletonList(returnDtos));
             response.setSuccess(true);
@@ -108,7 +109,7 @@ public class RoomsController {
     }
 
     @GetMapping("/buildings/{id}")
-    public ResponseEntity<ApiResponse> fetchAllRoomsInABuilding(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> fetchAllRoomsInABuilding(@PathVariable String id) {
         ApiResponse response = ApiResponse.builder()
                 .message("Failed to get list of rooms")
                 .status(HttpStatus.BAD_REQUEST)

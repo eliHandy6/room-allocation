@@ -31,8 +31,8 @@ public class BookRoomServiceImpl implements BookRoomService {
     @Override
     public BookedRoomResponseDto bookroom(BookRoomRequestDto bookRoomRequestDto) {
 
-        Rooms rooms = roomsRepository.findById(bookRoomRequestDto.getRoomId()).get();
-        Clubs clubs = clubsRepository.findById(bookRoomRequestDto.getClubId()).get();
+        Rooms rooms = roomsRepository.findById(Long.parseLong(bookRoomRequestDto.getRoomId())).get();
+        Clubs clubs = clubsRepository.findById(Long.parseLong(bookRoomRequestDto.getClubId())).get();
         Boolean exists = repository.existsByRoomsAndVenueDateAndTimeFromAndTimeTo(rooms, bookRoomRequestDto.getVenueDate(),
                 bookRoomRequestDto.getTimeFrom(), bookRoomRequestDto.getTimeTo());
 
@@ -80,6 +80,7 @@ public class BookRoomServiceImpl implements BookRoomService {
                 .timeFrom(masterBookings.getTimeFrom())
                 .timeTo(masterBookings.getTimeTo())
                 .club(clubdto)
+                .createdAt(masterBookings.getCreatedAt())
                 .build();
         return responseDto;
     }
@@ -117,6 +118,7 @@ public class BookRoomServiceImpl implements BookRoomService {
                 .status(masterBookings.getStatus())
                 .timeFrom(masterBookings.getTimeFrom())
                 .timeTo(masterBookings.getTimeTo())
+                .createdAt(masterBookings.getCreatedAt())
                 .club(clubdto)
                 .build();
         return responseDto;
@@ -166,8 +168,8 @@ public class BookRoomServiceImpl implements BookRoomService {
                     .timeFrom(masterBookings.getTimeFrom())
                     .timeTo(masterBookings.getTimeTo())
                     .club(clubdto)
+                    .createdAt(masterBookings.getCreatedAt())
                     .build();
-
             return responseDto;
         }).collect(Collectors.toList());
 
@@ -280,6 +282,8 @@ public class BookRoomServiceImpl implements BookRoomService {
                     .status(masterBookings.getStatus())
                     .timeFrom(masterBookings.getTimeFrom())
                     .timeTo(masterBookings.getTimeTo())
+                    .createdAt(masterBookings.getCreatedAt())
+                    .venueDate(masterBookings.getVenueDate())
                     .club(clubdto)
                     .build();
 
@@ -361,5 +365,44 @@ public class BookRoomServiceImpl implements BookRoomService {
                 .club(clubdto)
                 .build();
         return responseDto;
+    }
+
+    @Override
+    public List<BookedRoomResponseDto> getAllBookings() {
+        List<BookedRooms> roomHistory = repository.findAll();
+        return roomHistory.stream().map(masterBookings -> {
+            BuildingResponseDto buildingResponseDto = BuildingResponseDto.builder()
+                    .department(masterBookings.getRooms().getBuildings().getDepartment())
+                    .name(masterBookings.getRooms().getBuildings().getName())
+                    .build();
+            RoomResponseDto roomdto = RoomResponseDto.builder()
+                    .id(masterBookings.getRooms().getId())
+                    .capacity(masterBookings.getRooms().getCapacity())
+                    .name(masterBookings.getRooms().getName())
+                    .building(buildingResponseDto)
+                    .build();
+
+            ClubResponseDto clubdto = ClubResponseDto.builder()
+                    .id(masterBookings.getClubs().getId())
+                    .clubEmail(masterBookings.getClubs().getClubEmail())
+                    .contactPerson(masterBookings.getClubs().getContactPerson())
+                    .name(masterBookings.getClubs().getName())
+                    .description(masterBookings.getClubs().getDescription())
+                    .build();
+
+            BookedRoomResponseDto responseDto = BookedRoomResponseDto.builder()
+                    .id(masterBookings.getId())
+                    .room(roomdto)
+                    .comments(masterBookings.getBookieComments())
+                    .status(masterBookings.getStatus())
+                    .timeFrom(masterBookings.getTimeFrom())
+                    .timeTo(masterBookings.getTimeTo())
+                    .createdAt(masterBookings.getCreatedAt())
+                    .venueDate(masterBookings.getVenueDate())
+                    .club(clubdto)
+                    .build();
+
+            return responseDto;
+        }).collect(Collectors.toList());
     }
 }

@@ -28,8 +28,8 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(new ApiInfoBuilder()
-                        .title("Chuka University  Rooms Allocation  System")
-                        .description("Apopo Tola Rooms Allocation APIs.")
+                        .title("School Management System")
+                        .description("Steven Mutua APIs.")
                         .version("1.0.0")
                         .build());
     }

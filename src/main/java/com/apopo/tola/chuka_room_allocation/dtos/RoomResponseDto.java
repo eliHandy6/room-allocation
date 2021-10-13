@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,9 +20,12 @@ public class RoomResponseDto {
     @JsonProperty(value = "name")
     private String name;
 
-    @JsonProperty(value = "building_id")
+    @JsonProperty(value = "building")
     private BuildingResponseDto building;
 
     @JsonProperty(value = "capacity")
     private Long capacity;
+
+    @JsonProperty(value = "room_created_at")
+    private Instant roomCreatedAt;
 }

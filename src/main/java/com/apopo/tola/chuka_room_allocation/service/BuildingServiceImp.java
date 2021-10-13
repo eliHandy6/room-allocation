@@ -34,12 +34,14 @@ public class BuildingServiceImp implements BuilingsService {
     }
 
     @Override
-    public List<BuildingResponseDto> getAllBuilding(PageRequest pageRequest) {
-        List<Buildings> returnedList = repository.findAll(pageRequest).toList();
+    public List<BuildingResponseDto> getAllBuilding() {
+        List<Buildings> returnedList = repository.findAll();
         return returnedList.stream().map(buildings -> {
             BuildingResponseDto buildingResponseDto = BuildingResponseDto.builder()
                     .department(buildings.getDepartment())
                     .name(buildings.getName())
+                    .id(buildings.getId())
+                    .created_at(buildings.getCreatedAt())
                     .build();
             return buildingResponseDto;
 
